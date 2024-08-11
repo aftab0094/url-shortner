@@ -1,9 +1,36 @@
-{% extends 'index.html' %}
+{% extends 'base.html' %}
 
 {% block head %}
-<title>Url shortner</title>
+<title>URL Shortener</title>
 {% endblock %}
 
 {% block body %}
-<h1 style="text-align: center;">Url shortner</h1>
+<h1 style="text-align: center;">URL Shortener</h1>
+
+{% if short_url %}
+    <h2>Your short URL is: 
+        <a id="short-url" href="{{ url_for('redirect_url', short_url=short_url) }}" target="_blank">{{ short_url }}</a>
+    </h2>
+    <p>Original URL: {{ long_url }}</p>
+    <button onclick="copyToClipboard()">Copy</button>
+{% endif %}
+
+<form action="/" method="post">
+    <input type="text" name="long_url" id="long_url" placeholder="Enter URL here" required>
+    <input type="submit" value="Generate">
+</form>
+
+<script>
+function copyToClipboard() {
+    var shortUrl = document.getElementById("short-url").textContent;
+    var tempInput = document.createElement("input");
+    tempInput.value = shortUrl;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand("copy");
+    document.body.removeChild(tempInput);
+    alert("Short URL copied to clipboard!");
+}
+</script>
+
 {% endblock %}
